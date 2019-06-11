@@ -1,0 +1,74 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}かきさいと{% endblock title %}
+
+{% block content %}
+
+<h1>オセロ</h1>
+
+<h3 id="player">BLACK</h3>
+
+<div class="container">
+    <table border=1>
+        {% for row in board %}
+        {% set outer_loop_index0 = loop.index0 %}
+        <tr>
+            {% for col in row %}
+            {% if col == "●" %}
+            <td onclick="cClick('{{outer_loop_index0}}{{loop.index0}}')" onmouseover="cOver('{{outer_loop_index0}}{{loop.index0}}')">
+                   <img id="{{outer_loop_index0}}{{loop.index0}}" src="{{url_for('static', filename='BLACK.jpg')}}" width="30" height="30">
+            {% elif col == "○" %}
+            <td onclick="cClick('{{outer_loop_index0}}{{loop.index0}}')" onmouseover="cOver('{{outer_loop_index0}}{{loop.index0}}')">
+                   <img id="{{outer_loop_index0}}{{loop.index0}}" src="{{url_for('static', filename='WHITE.jpg')}}" width="30" height="30">
+            {% else %}
+            <td onclick="cClick('{{outer_loop_index0}}{{loop.index0}}')" onmouseover="cOver('{{outer_loop_index0}}{{loop.index0}}')">
+                   <img id="{{outer_loop_index0}}{{loop.index0}}" src="{{url_for('static', filename='BLANK.jpg')}}" width="30" height="30">
+            </td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock content %}
+
+
+{% block scripts %}
+{{ super() }}
+<script>
+var now_player="BLACK"
+
+function cClick(id){
+    console.log(id)
+    var id_data = JSON.stringify({"id": id});
+
+    $.ajax({
+        url: '{{ url_for('move') }}',
+        data: id_data,
+        contentType: 'application/json;charset=UTF-8',
+        type: 'POST'
+    }).done(function(data){
+        if (data["reverse"].length == 0){
+            console.log("特に何もしない。。。");
+        }
+        else {
+            for(let i = 0; i < data["reverse"].length; i++) {
+                console.log(data["reverse"][i]);
+                <!-- 現在のプレイヤが、リバースした場所の色を変える -->
+                var idImage = data["reverse"][i].join("")
+                document.getElementById(idImage).src = "/static/" + now_player + ".jpg";
+            }
+            now_player = data["next_battle_order"]
+            $("#player").text(now_player);
+            console.log("現在のプレイヤ：", now_player);
+        }
+
+    }).fail(function(){
+      console.log('fail');
+      alert("500 : サーバとの通信に失敗しました！")
+    });
+};
+
+</script>
+{% endblock scripts %}
