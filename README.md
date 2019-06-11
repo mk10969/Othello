@@ -41,7 +41,7 @@ $ git clone https:~~~~~~~~~
 2. Build the docker container
 
 ```
-$ docker build -t Othello .
+$ docker build . -t Othello 
 ```
 
 3. Run the container
