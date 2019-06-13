@@ -1,26 +1,20 @@
-FROM python:3.6-alpine
-#FROM python:3
+FROM python:3.6.5-slim
 
-# make working directory.
-RUN mkdir /opt/app
-WORKDIR /opt/app
+#Setting
+ENV LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
 
-# pipenv install
-RUN echo "now install..."
-#RUN pip3 install pipenv
+# git clone
+RUN apt update && \
+    apt install -y git && \
+    git clone https://github.com/mk10969/Othello.git
 
+WORKDIR  Othello
 
+# Install PyPI packages
+RUN pip install -U pip && \
+    pip install pipenv && \
+    pipenv install --system --ignore-pipfile --deploy
 
-
-## Add actual source code.
-#ADD app.py /app
-#
-## あかん、、、
-##ADD othello /app
-##ADD templates /app
-##ADD static /app
-#
-#
-#EXPOSE 5000
-#
-#CMD ["python", "app.py", "--port", "5000"]
+# app run
+CMD ["python", "app.py", "--port", "5000"]
