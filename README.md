@@ -42,18 +42,18 @@ $ git clone https://github.com/mk10969/Othello.git
 
 ```
 $ cd Othello
-$ docker build . -t Othello
+$ docker build . -t othello
 ```
 
 3. Run the container
 
 ```
-$ docker run --rm -p 5000:5000 Othello
+$ docker run --rm -p 5000:5000 othello
 ```
 
-4. To add more instances, vary the public port number before the colon:
+4. add more instances:
 
-    * `$ docker run --rm -p 5001:5000 Othello`
-    * `$ docker run --rm -p 5002:5000 Othello`
-    * `$ docker run --rm -p 5003:5000 Othello`
+    * `$ docker run --rm -p 5001:5000 othello`
+    * `$ docker run --rm -p 5002:5000 othello`
+    * `$ docker run --rm -p 5003:5000 othello`
 

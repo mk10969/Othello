@@ -5,8 +5,8 @@ ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8
 
 # git clone
-RUN apt update && \
-    apt install -y git && \
+RUN apt-get update && \
+    apt-get install -y git && \
     git clone https://github.com/mk10969/Othello.git
 
 WORKDIR  Othello
